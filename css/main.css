@@ -1,0 +1,10 @@
+/* Style for the greyed-out suffix */
+#domainSuffix {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+.tooltip-icon {
+    margin-left: 8px;
+    cursor: pointer;
+}
