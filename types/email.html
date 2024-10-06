@@ -18,7 +18,7 @@
         <h1 class="my-4">What action would you like to take?</h1>
 
         <!-- Button to Open the Modal -->
-        <button type="button" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="resetForm()">
+        <button type="button" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Basic Login')">
             Basic Login
         </button>
 
@@ -27,13 +27,31 @@
         <button id="action2" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Enrollment')">
             Enrollment
         </button>
-        <button id="action3" class="btn btn-primary mx-2 mb-3" onclick="window.location.href='email.html'">Learning Path</button>
-        <button id="action4" class="btn btn-primary mx-2 mb-3" onclick="window.location.href='email.html'">Catalog</button>
-        <button id="action5" class="btn btn-primary mx-2 mb-3" onclick="window.location.href='email.html'">Store</button>
-        <button id="action6" class="btn btn-primary mx-2 mb-3" onclick="window.location.href='email.html'">Catalog Course</button>
-        <button id="action7" class="btn btn-primary mx-2 mb-3" onclick="window.location.href='email.html'">Store Course</button>
-        <button id="action8" class="btn btn-primary mx-2 mb-3" onclick="window.location.href='email.html'">Resources</button>
+        <!-- Button to Open the Modal for Learning Path Enrollment (Action 3) -->
+        <button id="action3" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Learning Path')">
+            Learning Path
+        </button>
+        <!-- Button to Open the Modal for Catalog (Action 4) -->
+        <button id="action4" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Catalog')">
+            Catalog
+        </button>
+        <!-- Button to Open the Modal for Store (Action 5) -->
+        <button id="action5" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Store')">
+            Store
+        </button>
+        <!-- Button to Open the Modal for Catalog Course (Action 6) -->
+        <button id="action6" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Catalog Course')">
+            Catalog Course
+        </button>
+        <!-- Button to Open the Modal for Store Course (Action 7) -->
+        <button id="action7" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Store Course')">
+            Store Course
+        </button>
 
+        <!-- Button to Open the Modal for Resources (Action 8) -->
+        <button id="action8" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Resources')">
+            Resources
+        </button>
         <!-- Return to Homepage Button -->
         <div class="mt-5">
             <a href="../index.html" class="btn btn-outline-secondary btn-lg">Return to Homepage</a>
@@ -52,16 +70,18 @@
                     <!-- Form inside the modal -->
                     <form id="loginForm">
                         <!-- Whitelabel Toggle -->
-                        <header>Whitelabelling</header>
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" id="whitelabelToggle" onchange="toggleWhitelabel()">
+                        <div class="d-flex align-items-center mb-3">
+                        <header class="me-auto">Whitelabelling</header>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input large-toggle" type="checkbox" id="whitelabelToggle" onchange="toggleWhitelabel()">
                             <label class="form-check-label" for="whitelabelToggle">Enabled?</label>
-                            <!-- Tooltip icon -->
-                            <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Toggle this if your portal uses a custom/whitelabelled domain.">
-                                <i class="bi bi-info-circle"></i>
-                            </span>
                         </div>
-                        
+                        <!-- Tooltip icon -->
+                        <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Toggle this if your portal uses a custom/whitelabelled domain.">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
+                        </div>
+
                         <!-- Domain Field -->
                         <div class="mb-3">
                             <label for="domain" class="form-label">Domain</label>
@@ -92,13 +112,30 @@
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
+                            <!-- Tooltip icon -->
+                            <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="If you want to create a brand new user ensure that 'Create users if they do not exist?' is enabled under /settings/integrations/sqsso/users.">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email" placeholder="joe.bloggs@example.com" required>
                         </div>
 
-                        <!-- Enrollment ID (Only for Action 2) -->
+                        <!-- Enrollment ID (Only for Action 2/3) -->
                         <div class="mb-3 d-none" id="enrollmentIdField">
-                            <label for="enrollmentId" class="form-label">Enrollment ID</label>
-                            <input type="text" class="form-control" id="enrollmentId" placeholder="Enter Enrollment ID">
+                            <label for="enrollmentId" class="form-label" id="enrollmentIdLabel">Enrollment ID</label>
+                            <!-- Tooltip icon -->
+                            <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" id="tooltipEnrollmentId">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                            <input type="text" class="form-control" id="enrollmentId" placeholder="Enter Enrollment ID" required>
+                        </div>
+
+                        <div class="mb-3 d-none" id="courseIdField">
+                            <label for="courseId" class="form-label" id="courseIdLabel">Course ID</label>
+                            <!-- Tooltip icon -->
+                            <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" id="tooltipCourseId">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                            <input type="text" class="form-control" id="courseId" placeholder="Enter Course ID" required>
                         </div>
                     </form>
                 </div>

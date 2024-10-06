@@ -8,3 +8,13 @@
     margin-left: 8px;
     cursor: pointer;
 }
+
+.large-toggle {
+  transform: scale(1.5); /* Scale the toggle to make it larger */
+  margin-left: 15px; /* Add margin to the left to separate from the label */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.form-check-label {
+  margin-left: 10px; /* Add space between the toggle and the label */
+}

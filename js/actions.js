@@ -4,31 +4,87 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
-
 // Function to dynamically open modal for different actions
 function openModal(action) {
-  const modalTitle = document.getElementById('loginModalLabel');
-  const enrollmentField = document.getElementById('enrollmentIdField');
-  const nameFields = document.querySelectorAll('.name-fields');
-  
-  
-  // Reset the form and hide additional fields
-  resetForm();
-  
-  // Set the modal title and handle additional fields
-  if (action === 'Basic Login') {
-      modalTitle.textContent = 'Basic Login';
-      enrollmentField.classList.add('d-none');
-      nameFields.forEach(field => field.classList.remove('d-none')); // Show name fields
-  } else if (action === 'Enrollment') {
-      modalTitle.textContent = 'Enrollment';
-      enrollmentField.classList.remove('d-none'); // Show Enrollment ID field
-      nameFields.forEach(field => field.classList.add('d-none')); // Hide name fields
-  }
+    const modalTitle = document.getElementById('loginModalLabel');
+    const enrollmentField = document.getElementById('enrollmentIdField');
+    const enrollmentLabel = document.getElementById('enrollmentIdLabel');
+    const courseField = document.getElementById('courseIdField');
+    const courseLabel = document.getElementById('courseIdLabel');
+    const tooltipElement = document.getElementById('tooltipEnrollmentId');
+    const tooltipElement2 = document.getElementById('tooltipCourseId');
+    const nameFields = document.querySelectorAll('.name-fields');
 
-  // Store the action in a global variable or data attribute for later use
-  //document.getElementById('loginForm').dataset.action = action;
-  window.selectedAction = action;
+    // Store the action in a global variable for later use
+    window.selectedAction = action;
+
+    // Reset the form and hide additional fields
+    resetForm();
+
+    // Set the modal title and handle additional fields
+    if (action === 'Basic Login') {
+        modalTitle.textContent = 'Basic Login';
+        enrollmentField.classList.add('d-none');
+        nameFields.forEach(field => field.classList.remove('d-none')); // Show name fields
+    } else if (action === 'Enrollment') {
+        modalTitle.textContent = 'Enrollment';
+        enrollmentField.classList.remove('d-none'); // Show Enrollment ID field
+        nameFields.forEach(field => field.classList.add('d-none')); // Hide name fields
+        courseField.classList.add('d-none');
+        
+        // Update tooltip and label text for Enrollment
+        enrollmentLabel.textContent = 'Enrollment ID';
+        tooltipElement.setAttribute('title', 'You can find the Enrollment ID in the address bar of your web browser. You can find it in the address bar like so: /enrollments/123456789');
+    } else if (action === 'Learning Path') {
+        modalTitle.textContent = 'Learning Path';
+        enrollmentField.classList.remove('d-none'); // Show Enrollment ID field
+        nameFields.forEach(field => field.classList.add('d-none')); // Hide name fields
+        courseField.classList.add('d-none');
+        
+        // Update tooltip and label text for Learning Path
+        enrollmentLabel.textContent = 'Learning Path ID';
+        tooltipElement.setAttribute('title', 'You can find the Learning Path Enrollment ID in the address bar of your web browser. You can find it in the address bar like so: /lpaths/123456789');
+    } else if (action === 'Catalog') {
+        modalTitle.textContent = 'Catalog';
+        enrollmentField.classList.add('d-none');
+        nameFields.forEach(field => field.classList.add('d-none')); 
+        courseField.classList.add('d-none');
+    } else if (action === 'Store') {
+        modalTitle.textContent = 'Store';
+        enrollmentField.classList.add('d-none');
+        nameFields.forEach(field => field.classList.add('d-none'));
+        courseField.classList.add('d-none');
+    } else if (action === 'Catalog Course') {
+      modalTitle.textContent = 'Catalog Course';
+      enrollmentField.classList.add('d-none');
+      nameFields.forEach(field => field.classList.add('d-none'));
+      courseField.classList.remove('d-none');
+      courseLabel.textContent = 'Course ID';
+      tooltipElement2.setAttribute('title', 'You can find the Course ID in the address bar of your web browser. You can find it in the address bar like so: /catalog/123456');
+    } else if (action === 'Store Course') {
+      modalTitle.textContent = 'Store Course';
+      enrollmentField.classList.add('d-none');
+      nameFields.forEach(field => field.classList.add('d-none'));
+      courseField.classList.remove('d-none');
+      courseLabel.textContent = 'Course ID';
+      tooltipElement2.setAttribute('title', 'You can find the Course ID in the address bar of your web browser. You can find it in the address bar like so: /store/123456');
+    } else if (action === 'Resources') {
+      modalTitle.textContent = 'Resources';
+      enrollmentField.classList.add('d-none');
+      nameFields.forEach(field => field.classList.add('d-none'));
+      courseField.classList.add('d-none');
+    }
+
+    // Check if a tooltip instance exists, if not, initialize it
+    let tooltipInstance = bootstrap.Tooltip.getInstance(tooltipElement);
+    if (!tooltipInstance) {
+        // Initialize the tooltip if it doesn't exist
+        tooltipInstance = new bootstrap.Tooltip(tooltipElement);
+    } else {
+        // Destroy and reinitialize the tooltip if it exists
+        tooltipInstance.dispose(); // Destroy existing tooltip
+        tooltipInstance = new bootstrap.Tooltip(tooltipElement); // Reinitialize tooltip
+    }
 }
 
 // Function to reset the form when modal is opened
@@ -94,6 +150,7 @@ function urlCreate(action) {
   let domain = document.getElementById('domain').value.trim().toLowerCase();
   const key = document.getElementById('secretKey').value.trim();
   const emailAddress = document.getElementById('email').value.toLowerCase();
+  const courseId = document.getElementById('courseId').value.trim();
 
   // If Enrollment ID is visible, validate it
   const enrollmentField = document.getElementById('enrollmentIdField');
@@ -105,7 +162,6 @@ function urlCreate(action) {
       return;
     }
   }
-
   // Check if required inputs are filled
   if (!domain || !key || !emailAddress || (action === 'Enrollment' && !enrollmentId)) {
     alert("Please fill in all fields.");
@@ -129,17 +185,34 @@ function urlCreate(action) {
     + "&SSOToken=" + token;
 
   // Conditionally append name fields and enrollment redirect URI
-  if (action !== 'Enrollment') {
+  if (action == 'Basic Login') {
     const first_name = document.getElementById('firstName').value.toLowerCase().trim();
     const last_name = document.getElementById('lastName').value.toLowerCase().trim();
     url += "&first_name=" + encodeURIComponent(first_name)
         + "&last_name=" + encodeURIComponent(last_name);
     console.log('Form Submitted:', { domain, key, first_name, last_name, emailAddress, enrollmentId });
-  } else {
+  } else if (action == 'Enrollment') {
     url += "&redirect_uri=/enrollments/" + enrollmentId;
     console.log('Form Submitted:', { domain, key, emailAddress, enrollmentId });
+  } else if (action == 'Learning Path') {
+    url += "&redirect_uri=/lpaths/" + enrollmentId + "/content";
+    console.log('Form Submitted:', { domain, key, emailAddress, enrollmentId });
+  } else if (action == 'Catalog') {
+    url += "&redirect_uri=/catalog";
+    console.log('Form Submitted:', { domain, key, emailAddress });
+  } else if (action == 'Store') {
+    url += "&redirect_uri=/store";
+    console.log('Form Submitted:', { domain, key, emailAddress });
+  } else if (action == 'Catalog Course') {
+    url += "&redirect_uri=/catalog/" + courseId;
+    console.log('Form Submitted:', { domain, key, emailAddress, courseId });
+  } else if (action == 'Store Course') {
+    url += "&redirect_uri=/store/" + courseId;
+    console.log('Form Submitted:', { domain, key, emailAddress, courseId });
+  } else if (action == 'Resources') {
+    url += "&redirect_uri=/learner_resource_list";
+    console.log('Form Submitted:', { domain, key, emailAddress });
   }
-
 
   // Create a new date object
   const now = new Date();
