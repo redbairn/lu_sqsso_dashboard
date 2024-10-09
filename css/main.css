@@ -18,3 +18,174 @@
 .form-check-label {
   margin-left: 10px; /* Add space between the toggle and the label */
 }
+
+
+/*Email Page*/
+/* Email page styling with light blue tones */
+.email-page {
+  background-color: #e6f7ff; /* Soft light blue background */
+  color: #333; /* Dark text for contrast */
+}
+
+.button-29 {
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+  border: 0;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono",monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 18px;
+}
+
+.button-29:focus {
+  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
+
+.button-29:hover {
+  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button-29:active {
+  box-shadow: #3c4fe0 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+
+/*Username Page*/
+/* Username page styling with yellow tones */
+.username-page {
+  background-color: #fff9e6; /* Soft light yellow background */
+  color: #333; /* Dark text for contrast */
+}
+
+/* Adding 3D button effect similar to email page */
+.username-page .button-29 {
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(100% 100% at 100% 0, #ffd966 0, #e6b800 100%);
+  border: 0;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s, transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+
+.username-page .button-29:focus {
+  box-shadow: #e6b800 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #e6b800 0 -3px 0 inset;
+}
+
+.username-page .button-29:hover {
+  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #e6b800 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.username-page .button-29:active {
+  box-shadow: #e6b800 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+/*Index Page*/
+/* Index page styling with light purple tones */
+.index-page {
+  background-color: #f3e5f5; /* Soft light purple background */
+  color: #333; /* Dark text for contrast */
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+}
+
+.index-page h1, .index-page h2 {
+  color: #6a1b9a; /* Rich purple for headings */
+}
+
+.index-page p {
+  color: #555; /* Slightly lighter text for paragraphs */
+}
+
+
+/* Adding 3D button effect with purple theme */
+.index-page .button-29 {
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(100% 100% at 100% 0, #b39ddb 0, #7e57c2 100%); /* Light-to-dark purple gradient */
+  border: 0;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s, transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+
+.index-page .button-29:focus {
+  box-shadow: #7e57c2 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #7e57c2 0 -3px 0 inset;
+}
+
+.index-page .button-29:hover {
+  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #7e57c2 0 -3px 0 inset;
+  transform: translateY(-2px); /* 3D hover effect */
+}
+
+.index-page .button-29:active {
+  box-shadow: #7e57c2 0 3px 7px inset;
+  transform: translateY(2px); /* Button moves down when active */
+}
