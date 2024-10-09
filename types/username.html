@@ -52,6 +52,16 @@
         <button id="action8" class="btn btn-primary mx-2 mb-3" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="openModal('Resources')">
             Resources
         </button>
+
+        <div class="row my-4">
+            <div class="col text-center">
+              <button class="btn btn-lg btn-primary" id="runAllActionsBtn" onclick="openAllActionsModal()">Run All Actions</button>
+            </div>
+        </div>
+        
+
+
+
         <!-- Return to Homepage Button -->
         <div class="mt-5">
             <a href="../index.html" class="btn btn-outline-secondary btn-lg">Return to Homepage</a>
@@ -111,15 +121,6 @@
                         
                         <!-- Username -->
                         <div class="mb-3">
-                            <label for="usernameChoice" class="form-label">Choose Username Option</label>
-                            <select id="usernameChoice" class="form-select" onchange="toggleUsernameField()">
-                                <option value="default">Default Username</option>
-                                <option value="custom">Custom Username</option>
-                            </select>
-                        </div>
-
-                        <!-- Username Field -->
-                        <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <!-- Tooltip icon -->
                             <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="If you want to create a brand new user ensure that 'Create users if they do not exist?' is enabled under /settings/integrations/sqsso/users.">
@@ -128,7 +129,19 @@
                             <input type="text" class="form-control" id="username" placeholder="joe.bloggs123" required>
                         </div>
 
-                        <!-- Enrollment ID (Only for Action 2/3) -->
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
+                            <!-- Tooltip icon -->
+                            <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="You can pass in an email address for your user so they can receive email notifications for their enrollments, announcements, and more.">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email" placeholder="Optional: joe.bloggs@example.com">
+                        </div>
+
+
+                        <!-- Enrollment ID (Only for Action 2) -->
                         <div class="mb-3 d-none" id="enrollmentIdField">
                             <label for="enrollmentId" class="form-label" id="enrollmentIdLabel">Enrollment ID</label>
                             <!-- Tooltip icon -->
@@ -136,6 +149,16 @@
                                 <i class="bi bi-info-circle"></i>
                             </span>
                             <input type="number" class="form-control" id="enrollmentId" placeholder="Enter Enrollment ID" required>
+                        </div>
+
+                        <!-- Learning Path Enrollment ID (Only for Action 3) -->
+                        <div class="mb-3 d-none" id="lpEnrollmentIdField">
+                            <label for="lpEnrollmentId" class="form-label" id="lpEnrollmentIdLabel">Learning Path Enrollment ID</label>
+                            <!-- Tooltip icon -->
+                            <span class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" id="tooltipLPEnrollmentId">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                            <input type="number" class="form-control" id="lpEnrollmentId" placeholder="Enter LP Enrollment ID" required>
                         </div>
 
                         <div class="mb-3 d-none" id="courseIdField">
@@ -148,10 +171,13 @@
                         </div>
                     </form>
                 </div>
+                <!-- Modal Footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+                    <button type="button" class="btn btn-primary" id="modalActionButton">Submit</button>
                 </div>
+  
+
             </div>
         </div>
     </div>
@@ -161,5 +187,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
 

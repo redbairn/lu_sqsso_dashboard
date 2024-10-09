@@ -3,18 +3,52 @@ const currentPage = window.location.pathname;
 const mode = currentPage.includes('username.html') ? 'username' : 'email';
 
 // Update validation logic based on mode
-function validateForm() {
+function validateForm(callback) {
   const domain = document.getElementById('domain').value;
   const key = document.getElementById('secretKey').value;
-  const usernameOrEmail = document.getElementById(mode === 'username' ? 'username' : 'email').value;
-  const enrollmentId = document.getElementById('enrollmentId').value;
+
+  let userName = ''; 
+  let emailAddress = ''; 
+  if (mode === 'username') {
+    userName = document.getElementById('username').value.toLowerCase();
+  } else {
+    emailAddress = document.getElementById('email').value.toLowerCase();
+  }
+  const courseId = document.getElementById('courseId').value.trim();
   // Collect names before validating
   const first_name = document.getElementById('firstName').value.toLowerCase().trim();
   const last_name = document.getElementById('lastName').value.toLowerCase().trim();
+  // Validate Enrollment ID if visible
+  const enrollmentField = document.getElementById('enrollmentIdField');
+  let enrollmentId = null;
+  if (!enrollmentField.classList.contains('d-none')) {
+      enrollmentId = document.getElementById('enrollmentId').value.trim();
+  }
+  // Validate LP Enrollment ID if visible
+  const lpEnrollmentField = document.getElementById('lpEnrollmentIdField');
+  let lpEnrollmentId = null;
+  if (!lpEnrollmentField.classList.contains('d-none')) {
+    lpEnrollmentId = document.getElementById('lpEnrollmentId').value.trim();
+  }
 
-  if (!domain || !key || !usernameOrEmail || (window.selectedAction === ACTIONS.ENROLLMENT && !enrollmentId) || !first_name || !last_name) {
+  if (mode === 'username') {
+    if (!domain || !key || !userName || 
+      (window.selectedAction === ACTIONS.ENROLLMENT && !enrollmentId) || 
+      (window.selectedAction === ACTIONS.LEARNING_PATH && !lpEnrollmentId) || 
+      ((window.selectedAction === ACTIONS.CATALOG_COURSE || window.selectedAction === ACTIONS.STORE_COURSE)  && !courseId) || (window.selectedAction === ACTIONS.BASIC_LOGIN && !first_name) || (window.selectedAction === ACTIONS.BASIC_LOGIN && !last_name))
+      {
+        alert('Please fill out all the required fields.');
+        return false;
+    }
+  } else {
+    if (!domain || !key || !emailAddress || 
+      (window.selectedAction === ACTIONS.ENROLLMENT && !enrollmentId) || 
+      (window.selectedAction === ACTIONS.LEARNING_PATH && !lpEnrollmentId) ||  
+      ((window.selectedAction === ACTIONS.CATALOG_COURSE || window.selectedAction === ACTIONS.STORE_COURSE)  && !courseId) || (window.selectedAction === ACTIONS.BASIC_LOGIN && !first_name) || (window.selectedAction === ACTIONS.BASIC_LOGIN && !last_name))
+      {
       alert('Please fill out all the required fields.');
       return false;
+    }
   }
   return true;
 }
@@ -37,6 +71,7 @@ document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltipTriggerE
 });
 
 
+
 // Function to dynamically open modal for different actions
 function openModal(action) {
   const modalTitle = document.getElementById('loginModalLabel');
@@ -52,6 +87,7 @@ function openModal(action) {
 
   const tooltipElement = document.getElementById('tooltipEnrollmentId');
   const tooltipElement2 = document.getElementById('tooltipCourseId');
+  const tooltipElement3 = document.getElementById('tooltipLPEnrollmentId');
   const nameFields = document.querySelectorAll('.name-fields');
 
   // Set modal title and context
@@ -88,8 +124,8 @@ function openModal(action) {
           break;
       case ACTIONS.LEARNING_PATH:
           modalTitle.textContent = action;
-          enrollmentLabel.textContent = 'Learning Path Enrollment ID';
-          tooltipElement.setAttribute('title', 'You can find the Learning Path Enrollment ID in the address bar of your web browser. You can find it in the address bar like so: /lpaths/123456789');
+          lpEnrollmentIdLabel.textContent = 'Learning Path Enrollment ID';
+          tooltipElement3.setAttribute('title', 'You can find the Learning Path Enrollment ID in the address bar of your web browser. You can find it in the address bar like so: /lpaths/123456789');
           enrollmentField.classList.add('d-none');
           courseField.classList.add('d-none');
           lpEnrollmentIdField.classList.remove('d-none');
@@ -107,7 +143,7 @@ function openModal(action) {
       case ACTIONS.STORE_COURSE:
           modalTitle.textContent = action;
           enrollmentLabel.textContent = 'Course ID';
-          tooltipElement.setAttribute('title', 'You can find the Course ID in the address bar like so: /catalog/123456');
+          tooltipElement2.setAttribute('title', 'You can find the Course ID in the address bar like so: /catalog/123456');
           enrollmentField.classList.add('d-none');
           courseField.classList.remove('d-none');
           lpEnrollmentIdField.classList.add('d-none');
@@ -117,6 +153,7 @@ function openModal(action) {
 
   initializeTooltip(tooltipElement);
   initializeTooltip(tooltipElement2);
+  initializeTooltip(tooltipElement3);
 }
 
 function toggleUsernameField() {
@@ -140,13 +177,6 @@ function openAllActionsModal() {
   const enrollmentField = document.getElementById('enrollmentIdField');
   const courseField = document.getElementById('courseIdField');
   const lpEnrollmentIdField = document.getElementById('lpEnrollmentIdField');
-
-  const enrollmentLabel = document.getElementById('enrollmentIdLabel');
-  const courseLabel = document.getElementById('courseIdLabel');
-  const lpEnrollmentIdLabel = document.getElementById('lpEnrollmentIdLabel');
-
-  const tooltipElement = document.getElementById('tooltipEnrollmentId');
-  const tooltipElement2 = document.getElementById('tooltipCourseId');
   const nameFields = document.querySelectorAll('.name-fields');
 
   modalTitle.textContent = 'Run All Actions';
@@ -182,14 +212,9 @@ function submitAllActions() {
     ACTIONS.RESOURCES,
   ];
 
-  // Collect names before validating
-  const first_name = document.getElementById('firstName').value.toLowerCase().trim();
-  const last_name = document.getElementById('lastName').value.toLowerCase().trim();
-
-
   if (validateForm()) {
     actionsToRun.forEach(action => {
-      urlCreate(action, first_name, last_name);
+      urlCreate(action);
     });
   }
 }
@@ -220,9 +245,16 @@ function resetForm() {
   console.clear();
 }
 
-// Function to handle form submission
-function submitForm() {
-  urlCreate(window.selectedAction);
+
+// Function to handle form submission asynchronously
+async function submitForm() {
+  try {
+    if (validateForm()) {
+      await urlCreate(window.selectedAction);
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
 }
 
 function formatDateUTC(date) {
@@ -255,43 +287,24 @@ function toggleWhitelabel() {
 }
 
 function urlCreate(action) {
-  const whitelabelToggle = document.getElementById('whitelabelToggle');
-  let domain = document.getElementById('domain').value.trim().toLowerCase();
-  const key = document.getElementById('secretKey').value.trim();
+  let domain = document.getElementById('domain').value;
+  const key = document.getElementById('secretKey').value;
+  let userName = '';
+  let emailAddress = '';
   if (mode === 'username') {
-    const usernameChoice = document.getElementById('usernameChoice').value;
+    userName = document.getElementById('username').value.toLowerCase();
+    emailAddress = document.getElementById('email').value.toLowerCase(); /*Optional*/
+  } else {
+    emailAddress = document.getElementById('email').value.toLowerCase();
   }
-  const usernameOrEmail = document.getElementById(mode === 'username' ? 'username' : 'email').value;
-  // const emailAddress = document.getElementById('email').value.toLowerCase();
   const courseId = document.getElementById('courseId').value.trim();
-  
-  // Validate Enrollment ID if visible
-  const enrollmentField = document.getElementById('enrollmentIdField');
-  let enrollmentId = null;
-  if (!enrollmentField.classList.contains('d-none')) {
-      enrollmentId = document.getElementById('enrollmentId').value.trim();
-      if (!enrollmentId) {
-          alert("Please enter Enrollment ID.");
-          return;
-      }
-  }
+  const first_name = document.getElementById('firstName').value.toLowerCase().trim();
+  const last_name = document.getElementById('lastName').value.toLowerCase().trim();
 
-  // Validate LP Enrollment ID if visible
-  const lpEnrollmentField = document.getElementById('lpEnrollmentIdField');
-  let lpEnrollmentId = null;
-  if (!lpEnrollmentField.classList.contains('d-none')) {
-    lpEnrollmentId = document.getElementById('lpEnrollmentId').value.trim();
-      if (!lpEnrollmentId) {
-          alert("Please enter the LP Enrollment ID.");
-          return;
-      }
-  }
-  
-  // Check if required inputs are filled
-  if (!domain || !key || !usernameOrEmail || (action === ACTIONS.ENROLLMENT && !enrollmentId)) {
-      alert("Please fill in all fields.");
-      return;
-  }
+  const lpEnrollmentId = document.getElementById('lpEnrollmentId').value.trim();
+  const enrollmentId = document.getElementById('enrollmentId').value.trim();
+
+  const whitelabelToggle = document.getElementById('whitelabelToggle');
 
   // Append ".learnupon.com" if whitelabeling is not enabled
   if (!whitelabelToggle.checked) {
@@ -299,15 +312,26 @@ function urlCreate(action) {
   }
 
   const timestamp = Math.floor(Date.now() / 1000.0);
-  const message = `USER=${usernameOrEmail}&TS=${timestamp}&KEY=${key}`;
+  let message = ''; 
+
+  if (mode === 'username') {
+    // The end user should be able to provide an email address or leave the form without one
+    message = `SSOUserName=${userName}&USER=${emailAddress}&TS=${timestamp}&KEY=${key}`;
+    console.log("Token Parsed: " + message);
+  } else {
+    message = `USER=${emailAddress}&TS=${timestamp}&KEY=${key}`;
+    console.log("Token Parsed: " + message);
+  }
+
   const token = sha256(message);
 
   // Build the base URL
   let url = "https://" + domain + "/sqsso?";
   if (mode === 'username') {
-      url += "SSOUserName=" + encodeURIComponent(usernameOrEmail);
+      url += "Email=" + encodeURIComponent(emailAddress);
+      url += "&SSOUserName=" + encodeURIComponent(userName);
   } else {
-      url += "Email=" + encodeURIComponent(usernameOrEmail);
+      url += "Email=" + encodeURIComponent(emailAddress);
   }
   url += "&TS=" + timestamp;
   url += "&SSOToken=" + token;
@@ -322,48 +346,79 @@ function urlCreate(action) {
           const last_name = document.getElementById('lastName').value.toLowerCase().trim();
           url += `&first_name=${encodeURIComponent(first_name)}&last_name=${encodeURIComponent(last_name)}`;
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, first_name, last_name, usernameOrEmail });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, first_name, last_name, userName, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, first_name, last_name, emailAddress });
+          }
           break;
       case ACTIONS.ENROLLMENT:
           url += `&redirect_uri=/enrollments/${enrollmentId}`;
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail, enrollmentId });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, enrollmentId, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress, enrollmentId });
+          }
           break;
       case ACTIONS.LEARNING_PATH:
           url += `&redirect_uri=/lpaths/${lpEnrollmentId}/content`;
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail, lpEnrollmentId });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, lpEnrollmentId, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress, lpEnrollmentId });
+          }
           break;
       case ACTIONS.CATALOG:
           url += "&redirect_uri=/catalog";
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress });
+          }
           break;
       case ACTIONS.STORE:
           url += "&redirect_uri=/store";
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress });
+          }
           break;
       case ACTIONS.CATALOG_COURSE:
           url += `&redirect_uri=/catalog/${courseId}`;
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail, courseId });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, courseId, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress, courseId });
+          }
           break;
       case ACTIONS.STORE_COURSE:
           url += `&redirect_uri=/store/${courseId}`;
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail, courseId });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, courseId, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress, courseId });
+          }
           break;
        case ACTIONS.RESOURCES:
           url += "&redirect_uri=/learner_resource_list";
           console.log("Action selected: " + action);
-          console.log('Form Submitted:', { domain, key, usernameOrEmail });
+          if (mode === 'username') {
+            console.log('Form Submitted:', { domain, key, userName, emailAddress });
+          } else {
+            console.log('Form Submitted:', { domain, key, emailAddress });
+          }
           break;
       default:
           alert("Invalid action selected.");
           return;
   }
-
 
    // Create a new date object
    const now = new Date();
