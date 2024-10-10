@@ -101,9 +101,7 @@ function openModal(action) {
   // Show the modal
   const modalElement = document.getElementById('loginModal');
   const modal = new bootstrap.Modal(modalElement);
-  modal.show();
-
-// Then use `modal.hide()` as you're doing to close it
+  modal.show(); // To open the modal
 
 
   // Reset the form and hide additional fields
