@@ -3,7 +3,7 @@ const currentPage = window.location.pathname;
 const mode = currentPage.includes('username.html') ? 'username' : 'email';
 
 // Update validation logic based on mode
-function validateForm(callback) {
+function validateForm() {
   const domain = document.getElementById('domain').value;
   const key = document.getElementById('secretKey').value;
 
@@ -99,8 +99,12 @@ function openModal(action) {
   modalActionButton.onclick = submitForm;  // Bind the function for individual actions
 
   // Show the modal
-  const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+  const modalElement = document.getElementById('loginModal');
+  const modal = new bootstrap.Modal(modalElement);
   modal.show();
+
+// Then use `modal.hide()` as you're doing to close it
+
 
   // Reset the form and hide additional fields
   resetForm();
@@ -154,6 +158,10 @@ function openModal(action) {
   initializeTooltip(tooltipElement);
   initializeTooltip(tooltipElement2);
   initializeTooltip(tooltipElement3);
+
+  modal.hide();
+  modalElement.querySelector('form').reset();
+  document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
 }
 
 function toggleUsernameField() {
@@ -197,6 +205,8 @@ function openAllActionsModal() {
   lpEnrollmentIdField.classList.remove('d-none');
   courseField.classList.remove('d-none');
   nameFields.forEach(field => field.classList.remove('d-none'));
+
+  modal.hide();
 }
 
 
@@ -431,14 +441,21 @@ function urlCreate(action) {
    let newWindow = window.open(url, '_blank');
  
    // Handle pop-up blockers
-   if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-       alert('Pop-up was blocked. Please allow pop-ups for this site.');
-   } else {
-       // Close the modal after the URL opens successfully
-       const modalElement = document.getElementById('loginModal');
-       const modal = bootstrap.Modal.getInstance(modalElement);
-       if (modal) {
-           modal.hide();
-       }
-   }
+  if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+    alert('Pop-up was blocked. Please allow pop-ups for this site.');
+    // Optionally keep the modal open or reset the form
+  } else {
+      // Close the modal after the URL opens successfully
+      const modalElement = document.getElementById('loginModal');
+      let modal = bootstrap.Modal.getInstance(modalElement);
+      if (!modal) {
+          modal = new bootstrap.Modal(modalElement);
+      }
+      modal.hide();
+  }
+
+
+   
+
+
 }

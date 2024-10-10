@@ -19,12 +19,21 @@
   margin-left: 10px; /* Add space between the toggle and the label */
 }
 
+.modal-content {
+  text-align: left;
+}
+
 
 /*Email Page*/
 /* Email page styling with light blue tones */
 .email-page {
   background-color: #e6f7ff; /* Soft light blue background */
   color: #333; /* Dark text for contrast */
+}
+
+
+#runAllActionsBtn {
+  background-image: radial-gradient(100% 100% at 100% 0, #ff5a73 0, #8C0303 100%);
 }
 
 .button-29 {
