@@ -5,6 +5,9 @@ This SQSSO app allows anybody to test out the SQSSO integration between this app
 
  **Note: This can only be tested with a portal that has no mandatory custom user data enabed! You would need to temporarily set all custom user data to be optional.**
 
+You can test out the app from [here](https://redbairn.github.io/lu_sqsso_dashboard/).
+ 
+
 ## About SQSSO
 Signed Query Single Sign-On (SQSSO) is a lightweight single sign-on mechanism that you can use to "silently" log your users in to LearnUpon.
 
