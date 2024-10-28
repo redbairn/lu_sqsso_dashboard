@@ -138,6 +138,7 @@ function openModal(action) {
       case ACTIONS.RESOURCES:
           modalTitle.textContent = action;
           enrollmentField.classList.add('d-none');
+          lpEnrollmentIdField.classList.add('d-none');
           courseField.classList.add('d-none');
           nameFields.forEach(field => field.classList.add('d-none'));
           break;
