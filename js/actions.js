@@ -337,12 +337,10 @@ function urlCreate(action) {
   // Build the base URL
   let url = "https://" + domain + "/sqsso?";
   if (mode === 'username') {
-      // TEMP BREAK FOR TEST: url += "Email=" + encodeURIComponent(emailAddress);
-      url += "Email=" + emailAddress;
+      url += "Email=" + encodeURIComponent(emailAddress);
       url += "&SSOUserName=" + encodeURIComponent(userName);
   } else {
-      // TEMP BREAK FOR TEST: url += "Email=" + encodeURIComponent(emailAddress);
-    url += "Email=" + emailAddress;
+    url += "Email=" + encodeURIComponent(emailAddress);
   }
   url += "&TS=" + timestamp;
   url += "&SSOToken=" + token;
