@@ -341,7 +341,8 @@ function urlCreate(action) {
       url += "Email=" + emailAddress;
       url += "&SSOUserName=" + encodeURIComponent(userName);
   } else {
-      url += "Email=" + encodeURIComponent(emailAddress);
+      // TEMP BREAK FOR TEST: url += "Email=" + encodeURIComponent(emailAddress);
+    url += "Email=" + emailAddress;
   }
   url += "&TS=" + timestamp;
   url += "&SSOToken=" + token;
