@@ -337,7 +337,8 @@ function urlCreate(action) {
   // Build the base URL
   let url = "https://" + domain + "/sqsso?";
   if (mode === 'username') {
-      url += "Email=" + encodeURIComponent(emailAddress);
+      // TEMP BREAK FOR TEST: url += "Email=" + encodeURIComponent(emailAddress);
+      url += "Email=" + emailAddress;
       url += "&SSOUserName=" + encodeURIComponent(userName);
   } else {
       url += "Email=" + encodeURIComponent(emailAddress);
